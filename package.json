@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@nuxtjs/tailwindcss": "^6.1.1",
+    "nuxt": "3.0.0-rc.12"
+  },
+  "dependencies": {
+    "ardb": "^1.1.10",
+    "arweave-js": "^1.0.0",
+    "arweave-wallet-connector": "^0.0.31",
+    "brain.js": "^2.0.0-beta.16",
+    "daisyui": "^2.33.0",
+    "gpu.js": "^2.15.2"
+  }
+}
