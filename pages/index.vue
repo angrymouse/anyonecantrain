@@ -57,7 +57,7 @@
 </template>
 
 <script setup>
-import Arweave from "arweave-js"
+import Arweave from "arweave"
 import ArDB from 'ardb';
 import * as brain from "brain.js";
 console.log(brain)
@@ -78,10 +78,12 @@ let askInput = ref("")
 let trainingInput = ref("")
 let trainingResult = ref(null)
 ardb.search("transactions").tag("Protocol-Name", "AnyoneCanTrain").exclude("anchor").findAll().then(async transactions => {
+    console.log(transactions)
     transactions = await Promise.all(transactions.map(async transaction => {
         return await fetch(`https://arweave.net/` + transaction.id).then(r => r.text())
     }))
-    await anyoneCanTrain.train(transactions)
+    console.log(transactions)
+    await anyoneCanTrain.train(["My name is Ivan", "Your name... You didn't tell me your name! I'm neural network, not all-might AI.", ...transactions])
     console.log(anyoneCanTrain.toJSON())
 })
 async function ask() {

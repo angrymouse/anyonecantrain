@@ -1,9 +1,10 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
+import { defineNuxtConfig } from 'nuxt'
 export default defineNuxtConfig({
  modules: ['@nuxtjs/tailwindcss'],
+   target: "static",
+   mode: "spa",
  ssr:false,
- mode:"spa",
- target:"static",
  colorMode:{
     dataValue:"luxury"
  },
@@ -11,5 +12,7 @@ export default defineNuxtConfig({
         head: {
         htmlAttrs:{"data-theme": "halloween",}
     }
-    },
+   },
+
+
 })

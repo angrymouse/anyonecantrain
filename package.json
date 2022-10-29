@@ -9,11 +9,12 @@
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.1.1",
-    "nuxt": "3.0.0-rc.12"
+    "nuxt": "^3.0.0-rc.12"
   },
   "dependencies": {
+    "@nuxt/webpack-builder": "^3.0.0-rc.12",
     "ardb": "^1.1.10",
-    "arweave-js": "^1.0.0",
+    "arweave": "^1.11.6",
     "arweave-wallet-connector": "^0.0.31",
     "brain.js": "^2.0.0-beta.16",
     "daisyui": "^2.33.0",
