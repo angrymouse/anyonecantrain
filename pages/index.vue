@@ -119,13 +119,13 @@
     import ArDB from "ardb";
     import * as brain from "brain.js";
     
-    const removeLoader = () => {
-        const loader = document.querySelector(`#loader`);
-        loader.parentNode.removeChild(loader);
+    const initialState = {
+        reply: "",
+        question: "",
+        traindata: "",
+        results: null
     };
     
-    let anyoneCanTrain = new brain.recurrent.LSTM();
-
     const arweaveState = useState("arweave", () => {
         Arweave.init({
             host: "arweave.net",
@@ -135,53 +135,36 @@
             logging: false,
         });
     });
-    
-    const initialState = {
-        reply: "",
-        question: "",
-        traindata: "",
-        results: null
+
+    const config = {
+        train: {
+            iterations: 600,
+            data: [
+                "My name is Ivan.",
+                "We where fighting deflation and suddenly there came inflation out of nowhere"
+            ],
+        }
     };
-    
-    let arweave = arweaveState.value;
-    
+
+    const anyoneCanTrain = new brain.recurrent.LSTM();
+    anyoneCanTrain.options.hiddenLayers = [ 5, 13 ];
+    anyoneCanTrain.trainOpts.iterations = config.train.iterations;
     console.log(anyoneCanTrain);
-    
+    const arweave = arweaveState.value;
     const ardbState = useState("ardb", () => new ArDB(arweave.value));
     
     let ardb = ardbState.value;
     
     let reply = ref(initialState.reply);
     let question = ref(initialState.question);
-    let traindata = ref(initialState);
-    let results = ref(null);
+    let traindata = ref(initialState.traindata);
+    let results = ref(initialState.results); 
     
-    ardb.search("transactions")
-    .tag("Protocol-Name", "AnyoneCanTrain")
-    .exclude("anchor")
-    .findAll()
-    .then(async transactions => {
-        console.log(transactions);
-
-        transactions = await Promise.all(transactions.map(async transaction => {
-            const URL = `https://arweave.net/${transaction.id}`;
-            const r = await fetch(URL);
-            return await r.text();
-        }));
-
-        console.log(transactions);
-        
-        await anyoneCanTrain.train([
-            "My name is Ivan", 
-            "Your name... You didn't tell me your name! I'm neural network, not all-might AI.", 
-            ...transactions
-        ]);
-        
-        console.log(anyoneCanTrain.toJSON());
-
-        removeLoader();
-    });
-
+    const removeLoader = () => {
+        const loader = document.querySelector(`#loader`);
+        loader.parentNode.removeChild(loader);
+    };
+    
     const questionHandler = async () => {
         reply.value = await anyoneCanTrain.run(question.value);
         console.log(reply.value);
@@ -193,10 +176,36 @@
         });
         transaction.addTag('Content-Type', 'text/plain');
         transaction.addTag('Protocol-Name', 'AnyoneCanTrain');
-        let clone = traindata.value;
-        traindata.value = initialState.train;
+        const clone = traindata.value;
+        traindata.value = initialState.traindata;
         await window.arweaveWallet.dispatch(transaction);
-        await anyoneCanTrain.train([clone]);
+        await anyoneCanTrain.train([clone], config.train.iterations);
         results.value = clone;
     };
+
+    const init = () => {
+        ardb.search("transactions")
+        .tag("Protocol-Name", "AnyoneCanTrain")
+        .exclude("anchor")
+        .findAll()
+        .then(async transactions => {
+            console.log(transactions);
+            
+            const transactiondata = await Promise.all(transactions.map(async transaction => {
+                const URL = `https://arweave.net/${transaction.id}`;
+                return await fetch(URL)
+                .then(r => r.text());
+            }));
+
+            console.log(transactiondata);
+
+            await anyoneCanTrain.train([ ...config.train.data, ...transactiondata ], config.train.iterations)
+            
+            console.log(anyoneCanTrain.toJSON());
+            
+            removeLoader();
+        });
+    };
+
+    init();
 </script>
