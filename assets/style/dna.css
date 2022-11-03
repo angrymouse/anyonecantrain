@@ -1,0 +1,312 @@
+div.anchor {
+	position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    background-color: rgba(11,17,23,1);
+}
+
+div.dna {
+	height: auto;
+	left: 0;
+	width: 100%;
+	display: block;
+	transform: scale3d(.75, .75, 1);
+   	filter: drop-shadow(0 1px 36px white);
+   	/*animation: split-dna--00 23s ease-in alternate infinite;*/
+}
+
+div.particles, 
+div.rods {
+	position: relative;
+	height: 100%;
+	width: 40vmin;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-between;
+}
+
+#red {
+	margin-top: -1vmin;
+}
+
+div.particle {
+	border: none;
+	border-radius: 50%;
+	width: 1vmin;
+	height: 1vmin;
+}
+
+div.blue {
+/*	background-color: rgb(0 0 255 / 90);
+	background-image: linear-gradient(37deg, purple, blue, cyan);
+	box-shadow: 0 0 1.175em lightcyan;
+	background-color: rgb(20 125 255 / 90);
+    background-image: linear-gradient(37deg, purple, rgba(26,226,126,1), cyan);*/
+	/*green-overwrite*/
+    background-image: linear-gradient(37deg, purple, rgba(26,226,126,1), rgba(53,212,199,1));
+    box-shadow: 0 0 1.175em lightcyan;
+   	animation: rand-color-00 23s ease-in alternate infinite;
+}
+
+div.red {
+	background-color: rgb(255 0 0 / 90);
+	background-image: linear-gradient(32deg, brown, purple, red, pink, red);
+	box-shadow:  0 0 1.175em hotpink;	
+}
+
+div.rod {
+	width: .25vmin;
+    height: 1vmin;
+    background-color: lightcyan;
+    background-image: linear-gradient(88deg, cyan, snow, lightcyan);
+    box-shadow: 0 0 0.875em aliceblue;
+    margin: 3.75vmin .375vmin;
+    box-sizing: border-box;
+    border-radius: 50%;
+    max-width: .25vmin;
+    overflow: hidden;
+    transform: scale3d(.375, 7.5, 1);
+    opacity: .8;
+    filter: drop-shadow(0 0 2vmin cornflowerblue);
+    animation: x 23s ease-in alternate infinite;
+}
+
+div.progress {
+    text-align: center;
+    color: rgba(26,216,125,0.99);
+    padding: 1vh 3vw 17.5em;
+    position: fixed;
+    width: max-content;
+    transform: translate3d(0px,-32vh,0);
+    opacity: .7;
+    box-shadow: 
+    	0px 1px 1px rgba(26,212,178,0.09), 
+    	1px 2px 2px rgba(26,212,178,0.09)
+    ;
+
+}
+
+div.progress img {
+	margin: 2.5vh auto;
+}
+div.progress h2 {
+	margin: .375em auto;
+}
+
+
+div.particle.red:nth-child(1)
+{
+	animation: particle-spin-00 4s linear 0.0s backwards infinite;
+}
+div.particle.red:nth-child(2)
+{
+	animation: particle-spin-00 4s linear 0.2s backwards infinite;
+}
+div.particle.red:nth-child(3)
+{
+	animation: particle-spin-00 4s linear 0.4s backwards infinite;
+}
+div.particle.red:nth-child(4)
+{
+	animation: particle-spin-00 4s linear 0.6s backwards infinite;
+}
+div.particle.red:nth-child(5)
+{
+	animation: particle-spin-00 4s linear 0.8s backwards infinite;
+}
+div.particle.red:nth-child(6)
+{
+	animation: particle-spin-00 4s linear 1.0s backwards infinite;
+}
+div.particle.red:nth-child(7)
+{
+	animation: particle-spin-00 4s linear 1.2s backwards infinite;
+}
+div.particle.red:nth-child(8)
+{
+	animation: particle-spin-00 4s linear 1.4s backwards infinite;
+}
+div.particle.red:nth-child(9)
+{
+	animation: particle-spin-00 4s linear 1.6s backwards infinite;
+}
+div.particle.red:nth-child(10)
+{
+	animation: particle-spin-00 4s linear 1.8s backwards infinite;
+}
+
+
+div.particle.blue:nth-child(1)
+{
+	animation: particle-spin-00 4s linear 2.0s backwards infinite;
+}
+div.particle.blue:nth-child(2)
+{
+	animation: particle-spin-00 4s linear 2.2s backwards infinite;
+}
+div.particle.blue:nth-child(3)
+{
+	animation: particle-spin-00 4s linear 2.4s backwards infinite;
+}
+div.particle.blue:nth-child(4)
+{
+	animation: particle-spin-00 4s linear 2.6s backwards infinite;
+}
+div.particle.blue:nth-child(5)
+{
+	animation: particle-spin-00 4s linear 2.8s backwards infinite;
+}
+div.particle.blue:nth-child(6)
+{
+	animation: particle-spin-00 4s linear 3.0s backwards infinite;
+}
+div.particle.blue:nth-child(7)
+{
+	animation: particle-spin-00 4s linear 3.2s backwards infinite;
+}
+div.particle.blue:nth-child(8)
+{
+	animation: particle-spin-00 4s linear 3.4s backwards infinite;
+}
+div.particle.blue:nth-child(9)
+{
+	animation: particle-spin-00 4s linear 3.6s backwards infinite;
+}
+div.particle.blue:nth-child(10)
+{
+	animation: particle-spin-00 4s linear 3.8s backwards infinite;
+}
+
+
+div.rod:nth-child(1)
+{
+	animation: rod-spin-00 4s linear 0.0s backwards infinite;
+}
+div.rod:nth-child(2)
+{
+	animation: rod-spin-00 4s linear 0.2s backwards infinite;
+}
+div.rod:nth-child(3)
+{
+	animation: rod-spin-00 4s linear 0.4s backwards infinite;
+}
+div.rod:nth-child(4)
+{
+	animation: rod-spin-00 4s linear 0.6s backwards infinite;
+}
+div.rod:nth-child(5)
+{
+	animation: rod-spin-00 4s linear 0.8s backwards infinite;
+}
+div.rod:nth-child(6)
+{
+	animation: rod-spin-00 4s linear 1.0s backwards infinite;
+}
+div.rod:nth-child(7)
+{
+	animation: rod-spin-00 4s linear 1.2s backwards infinite;
+}
+div.rod:nth-child(8)
+{
+	animation: rod-spin-00 4s linear 1.4s backwards infinite;
+}
+div.rod:nth-child(9)
+{
+	animation: rod-spin-00 4s linear 1.6s backwards infinite;
+}
+div.rod:nth-child(10)
+{
+	animation: rod-spin-00 4s linear 1.8s backwards infinite;
+}
+
+@KEYFRAMES particle-spin-00
+{
+	0% 	{ 
+			transform: translateY(0%);
+			opacity: .8;
+		}
+	7% 	{ 
+			transform: translateY(75%);
+		}
+	25% { 
+			transform: translateY(500%);
+			opacity: 1;
+		}
+	43%	{ 
+			transform: translateY(925%);
+		}
+	50%	{ 
+			transform: translateY(1000%); 
+			opacity: .8;
+		}
+	57% {
+			transform: translateY(925%); 
+		}
+	75%	{ 
+			transform: translateY(500%);
+			opacity: .2;
+		}
+	93%	{ 
+			transform: translateY(75%); 
+		}
+	100%{ 
+			transform: translateY(0%); 
+			opacity: .8;
+		}
+}
+
+@KEYFRAMES rod-spin-00
+{
+	0%	{
+			transform: scale3d(.375, 7.5, 1);
+			opacity: .6;
+		}
+	25%	{
+			transform: scale3d(.01, .01, 1);
+			opacity: .3;
+		}
+	50%	{
+			transform: scale3d(.375, 7.5, 1);
+			opacity: .6;
+		}
+	75%	{
+			transform: scale3d(.01, .01, 1);
+			opacity: .3;
+		}
+	100%{
+			transform: scale3d(.375, 7.5, 1);
+			opacity: .6;
+		}
+}
+
+@KEYFRAMES split-dna--00
+{
+	0%  {
+			height: 0vh;
+		}
+	100%{
+			height: 23vh;
+		}
+}
+
+@KEYFRAMES rand-color-00
+{
+	0%  {
+    		background-image: linear-gradient(37deg, rgba(112,250,0,1), rgba(26,226,26,1), rgba(53,212,199,1));
+		}	
+	50% {
+    		background-image: linear-gradient(37deg, rgba(200,200,0,1), rgba(26,226,126,1), rgba(53,212,199,1));
+		}
+	100%{
+    		background-image: linear-gradient(37deg, rgba(0,100,200,1), rgba(126,126,26,1), rgba(53,12,199,1));
+		}
+}
