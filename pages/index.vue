@@ -204,3 +204,6 @@ const init = () => {
 
 init();
 </script>
+<style>
+@import "~/assets/style/dna.css";
+</style>
