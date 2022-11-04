@@ -1,9 +1,6 @@
 <template>
-    <head>
-      <link rel="stylesheet" href="~/assets/style/dna.css" />
-    </head>
     <div class="h-full w-full flex flex-col items-center justify-center">
-        <div id="loader" class="anchor">
+        <div v-if="notLoaded" id="loader" class="anchor">
             <div class="dna">
                 <div class="particles" id="blue">
                     <div class="particle blue" id="p_b__00"></div>
@@ -60,7 +57,8 @@
             Neural network that anyone can train
         </h1>
         <p>
-            Censorship resistant and permanent with <a href="https://arweave.org/" class="link link-primary">Arweave</a>,
+            Censorship resistant and permanent with <a href="https://arweave.org/"
+                class="link link-primary">Arweave</a>,
             powered by <a class="link link-primary" href="https://brain.js.org/">brain.js</a>
         </p>
         <h2 class="text-2xl mt-4 text-center w-96 flex flex-row justify-center items-center">
@@ -115,97 +113,94 @@
 </template>
 
 <script setup>
-    import Arweave from "arweave"
-    import ArDB from "ardb";
-    import * as brain from "brain.js";
-    
-    const initialState = {
-        reply: "",
-        question: "",
-        traindata: "",
-        results: null
-    };
-    
-    const arweaveState = useState("arweave", () => {
-        Arweave.init({
-            host: "arweave.net",
-            port: 443,
-            protocol: "https",
-            timeout: 60_000,
-            logging: false,
-        });
+import Arweave from "arweave"
+import ArDB from "ardb";
+import * as brain from "brain.js";
+
+const initialState = {
+    reply: "",
+    question: "",
+    traindata: "",
+    results: null
+};
+
+const arweaveState = useState("arweave", () => {
+    Arweave.init({
+        host: "arweave.net",
+        port: 443,
+        protocol: "https",
+        timeout: 60_000,
+        logging: false,
     });
+});
 
-    const config = {
-        train: {
-            iterations: 600,
-            data: [
-                "My name is Ivan.",
-                "We where fighting deflation and suddenly there came inflation out of nowhere"
-            ],
-        }
-    };
+const config = {
+    train: {
+        iterations: 600,
+        data: [
+            "My name is Ivan.",
+            "We where fighting deflation and suddenly there came inflation out of nowhere"
+        ],
+    }
+};
 
-    const anyoneCanTrain = new brain.recurrent.LSTM();
-    anyoneCanTrain.options.hiddenLayers = [ 5, 13 ];
-    anyoneCanTrain.trainOpts.iterations = config.train.iterations;
-    console.log(anyoneCanTrain);
-    const arweave = arweaveState.value;
-    const ardbState = useState("ardb", () => new ArDB(arweave.value));
-    
-    let ardb = ardbState.value;
-    
-    let reply = ref(initialState.reply);
-    let question = ref(initialState.question);
-    let traindata = ref(initialState.traindata);
-    let results = ref(initialState.results); 
-    
-    const removeLoader = () => {
-        const loader = document.querySelector(`#loader`);
-        loader.parentNode.removeChild(loader);
-    };
-    
-    const questionHandler = async () => {
-        reply.value = await anyoneCanTrain.run(question.value);
-        console.log(reply.value);
-    };
-    
-    const trainHandler = async () => {
-        let transaction = await arweave.createTransaction({
-            data: traindata.value,
-        });
-        transaction.addTag('Content-Type', 'text/plain');
-        transaction.addTag('Protocol-Name', 'AnyoneCanTrain');
-        const clone = traindata.value;
-        traindata.value = initialState.traindata;
-        await window.arweaveWallet.dispatch(transaction);
-        await anyoneCanTrain.train([clone], config.train.iterations);
-        results.value = clone;
-    };
+const anyoneCanTrain = new brain.recurrent.LSTM();
+anyoneCanTrain.options.hiddenLayers = [5, 13];
+anyoneCanTrain.trainOpts.iterations = config.train.iterations;
 
-    const init = () => {
-        ardb.search("transactions")
+const arweave = arweaveState.value;
+const ardbState = useState("ardb", () => new ArDB(arweave.value));
+
+let ardb = ardbState.value;
+
+let reply = ref(initialState.reply);
+let question = ref(initialState.question);
+let traindata = ref(initialState.traindata);
+let results = ref(initialState.results);
+let notLoaded = ref(true);
+
+const removeLoader = () => {
+    notLoaded.value = false;
+};
+
+const questionHandler = async () => {
+    reply.value = await anyoneCanTrain.run(question.value);
+};
+
+const trainHandler = async () => {
+    let transaction = await arweave.createTransaction({
+        data: traindata.value,
+    });
+    transaction.addTag('Content-Type', 'text/plain');
+    transaction.addTag('Protocol-Name', 'AnyoneCanTrain');
+    const clone = traindata.value;
+    traindata.value = initialState.traindata;
+    await window.arweaveWallet.dispatch(transaction);
+    await anyoneCanTrain.train([clone], config.train.iterations);
+    results.value = clone;
+};
+
+const init = () => {
+    ardb.search("transactions")
         .tag("Protocol-Name", "AnyoneCanTrain")
         .exclude("anchor")
         .findAll()
         .then(async transactions => {
             console.log(transactions);
-            
+
             const transactiondata = await Promise.all(transactions.map(async transaction => {
                 const URL = `https://arweave.net/${transaction.id}`;
                 return await fetch(URL)
-                .then(r => r.text());
+                    .then(r => r.text());
             }));
 
             console.log(transactiondata);
 
-            await anyoneCanTrain.train([ ...config.train.data, ...transactiondata ], config.train.iterations)
-            
-            console.log(anyoneCanTrain.toJSON());
-            
+            await anyoneCanTrain.train([...config.train.data, ...transactiondata], config.train.iterations)
+
             removeLoader();
         });
-    };
+};
 
-    init();
+init();
 </script>
